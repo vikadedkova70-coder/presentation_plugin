@@ -1,0 +1,19 @@
+{$DOMAIN} {
+	encode gzip
+
+	request_body {
+		max_size 110MB
+	}
+
+	# API и документация -> FastAPI
+	@api path /api/* /health /docs /docs/* /openapi.json
+	handle @api {
+		reverse_proxy api:8000
+	}
+
+	# всё остальное -> статические файлы плагина (taskpane.html, js, css, иконки)
+	handle {
+		root * /srv/addin
+		file_server
+	}
+}
