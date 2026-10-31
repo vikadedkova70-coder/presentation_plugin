@@ -1,0 +1,17 @@
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+dist/
+lib/
+build/
+*.tsbuildinfo
+.office-addin-usage-data
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/settings.json
+.DS_Store
+Thumbs.db
+desktop.ini
