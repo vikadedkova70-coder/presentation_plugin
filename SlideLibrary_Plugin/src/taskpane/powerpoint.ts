@@ -1,7 +1,4 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
- * See LICENSE in the project root for license information.
- */
+/* Связать кнопку, форму, состояния загрузки и результат */
 import { getPresentationBlob } from "../office/presentation";
 /* global document, Office, PowerPoint */
 
