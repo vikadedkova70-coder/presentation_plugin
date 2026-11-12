@@ -35,7 +35,7 @@ async function handleExportSubmit(event: Event) {
         formData.append("tags", tagsInput?.value || "");
 
         updateStatus("Отправка на сервер...", "info");
-
+// TODO: Нужно не забыть Вынести в export_api.ts при интеграци c бэкендом
         const BACKEND_URL = "https://localhost:8000/api/exports"; 
         const response = await fetch(BACKEND_URL, {
             method: "POST",
