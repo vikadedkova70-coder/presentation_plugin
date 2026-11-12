@@ -1,80 +1,164 @@
-/* 
- * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
- * See LICENSE in the project root for license information.
- */
+body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fafafa;
+    color: #323130;
+    font-size: 14px;
+}
 
- html,
- body {
-     width: 100%;
-     height: 100%;
-     margin: 0;
-     padding: 0;
- }
- 
- ul {
-     margin: 0;
-     padding: 0;
- }
- 
- .ms-welcome__header {
+.ms-welcome {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    box-sizing: border-box;
+}
+
+.header {
+    padding: 20px 20px 12px 20px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #edebe9;
+}
+
+h2 {
+    margin: 0 0 4px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #201f1e;
+}
+
+.subtitle {
+    margin: 0;
+    font-size: 12px;
+    color: #605e5c;
+}
+
+.main-content {
     padding: 20px;
-    padding-bottom: 30px;
-    padding-top: 100px;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-direction: column;
-    flex-direction: column;
-    align-items: center;
- }
-
- .ms-welcome__main {
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-direction: column;
-    flex-direction: column;
-    -webkit-flex-wrap: nowrap;
-    flex-wrap: nowrap;
-    -webkit-align-items: center;
-    align-items: center;
-    -webkit-flex: 1 0 0;
-    flex: 1 0 0;
-    padding: 10px 20px;
- }
- 
- .ms-welcome__main > h2 {
-     width: 100%;
-     text-align: center;
- }
- 
- .ms-welcome__features {
-     list-style-type: none;
-     margin-top: 20px;
- }
- 
- .ms-welcome__features.ms-List .ms-ListItem {
-     padding-bottom: 20px;
-     display: -webkit-flex;
-     display: flex;
- }
- 
- .ms-welcome__features.ms-List .ms-ListItem > .ms-Icon {
-     margin-right: 10px;
- }
- 
- .ms-welcome__action.ms-Button--hero {
-     margin-top: 30px;
- }
- 
-.ms-Button.ms-Button--hero .ms-Button-label {
-  color: #0078d7;
+    overflow-y: auto;
+    flex: 1;
+    background-color: #ffffff;
 }
 
-.ms-Button.ms-Button--hero:hover .ms-Button-label,
-.ms-Button.ms-Button--hero:focus .ms-Button-label{
-  color: #005a9e;
-  cursor: pointer;
+#export-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
-b {
-    font-weight: bold;
+.ms-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.ms-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #323130;
+}
+
+.required {
+    color: #a80000;
+}
+
+.ms-input, .ms-textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #8a8886;
+    border-radius: 2px;
+    box-sizing: border-box;
+    font-size: 13px;
+    font-family: inherit;
+    background-color: #ffffff;
+    color: #323130;
+    transition: border-color 0.1s ease;
+}
+
+.ms-input:hover, .ms-textarea:hover {
+    border-color: #323130;
+}
+
+.ms-input:focus, .ms-textarea:focus {
+    border-color: #E88D5D; 
+    outline: none;
+    box-shadow: 0 0 0 1px #E88D5D;
+}
+
+.ms-textarea {
+    resize: vertical;
+    min-height: 70px;
+}
+
+.ms-button-primary {
+    width: 100%;
+    padding: 10px 16px;
+    background-color: #E88D5D; 
+    color: #ffffff;
+    border: none;
+    border-radius: 2px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.1s ease;
+    margin-top: 8px;
+}
+
+.ms-button-primary:hover {
+    background-color: #D97D4D; 
+}
+
+.ms-button-primary:active {
+    background-color: #C16A3D; 
+}
+
+.ms-button-primary:disabled {
+    background-color: #f3f2f1;
+    color: #a19f9d;
+    cursor: not-allowed;
+    border: 1px solid #edebe9;
+}
+
+.status-box {
+    margin-top: 16px;
+    padding: 12px;
+    border-radius: 2px;
+    font-size: 13px;
+    border-left: 4px solid transparent;
+}
+
+.status-box.info {
+    background-color: #f3f2f1;
+    color: #323130;
+    border-left-color: #0078d4;
+}
+
+.status-box.success {
+    background-color: #fdefef; 
+    background-color: #eff6ed;
+    color: #107c10;
+    border-left-color: #107c10;
+}
+
+.status-box.error {
+    background-color: #fde7e9;
+    color: #a80000;
+    border-left-color: #a80000;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#result-link {
+    display: inline-block;
+    margin-top: 6px;
+    color: #0078d4;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+#result-link:hover {
+    text-decoration: underline;
 }
