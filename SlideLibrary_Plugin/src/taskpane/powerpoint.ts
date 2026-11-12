@@ -3,7 +3,9 @@
  * See LICENSE in the project root for license information.
  */
 
-/* global Office, document, fetch, FormData, Blob */
+/* global Office, document, fetch, FormData */
+
+import { getPresentationBlob } from "../office/presentation";
 
 Office.onReady((info) => {
     if (info.host === Office.HostType.PowerPoint) {
@@ -26,17 +28,17 @@ async function handleExportSubmit(event: Event) {
     updateStatus("Извлечение файла из PowerPoint...", "info");
 
     try {
-        const presentationSlice = await getPresentationFileBlob();
+        const { blob: presentationBlob } = await getPresentationBlob();
 
         const formData = new FormData();
-        formData.append("file", presentationSlice, `${titleInput?.value || "presentation"}.pptx`);
+        formData.append("file", presentationBlob, `${titleInput?.value || "presentation"}.pptx`);
         formData.append("title", titleInput?.value || "");
         formData.append("description", descInput?.value || "");
         formData.append("tags", tagsInput?.value || "");
 
         updateStatus("Отправка на сервер...", "info");
-// TODO: Нужно не забыть Вынести в export_api.ts при интеграци c бэкендом
-        const BACKEND_URL = "https://localhost:8000/api/exports"; 
+        // TODO: Вынести в export_api.ts при интеграции с бэкендом
+        const BACKEND_URL = "https://localhost:8000/api/exports";
         const response = await fetch(BACKEND_URL, {
             method: "POST",
             body: formData
@@ -55,52 +57,6 @@ async function handleExportSubmit(event: Event) {
     } finally {
         if (exportBtn) exportBtn.disabled = false;
     }
-}
-
-function getPresentationFileBlob(): Promise<Blob> {
-    return new Promise((resolve, reject) => {
-        Office.context.document.getFileAsync(
-            Office.FileType.Compressed,
-            { sliceSize: 65536 },
-            (result) => {
-                if (result.status === Office.AsyncResultStatus.Failed) {
-                    reject(new Error(result.error.message));
-                    return;
-                }
-
-                const file = result.value;
-                const slicesCount = file.sliceCount;
-                const slicePromises: Promise<ArrayBuffer>[] = [];
-
-                for (let i = 0; i < slicesCount; i++) {
-                    slicePromises.push(
-                        new Promise((res, rej) => {
-                            file.getSliceAsync(i, (sliceResult) => {
-                                if (sliceResult.status === Office.AsyncResultStatus.Succeeded) {
-                                    res(sliceResult.value.data);
-                                } else {
-                                    rej(sliceResult.error.message);
-                                }
-                            });
-                        })
-                    );
-                }
-
-                Promise.all(slicePromises)
-                    .then((buffers) => {
-                        file.closeAsync();
-                        const blob = new Blob(buffers, {
-                            type: "application/vnd.openxmlformats-officedocument.presentationml.presentation"
-                        });
-                        resolve(blob);
-                    })
-                    .catch((err) => {
-                        file.closeAsync();
-                        reject(err);
-                    });
-            }
-        );
-    });
 }
 
 function updateStatus(message: string, type: "info" | "success" | "error") {
