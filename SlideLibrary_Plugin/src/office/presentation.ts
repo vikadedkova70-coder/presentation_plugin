@@ -14,10 +14,9 @@ const SLICE_SIZE = 1024 * 1024; // 1 МБ
 const toMB = (bytes: number) => (bytes / 1024 / 1024).toFixed(1) + " МБ";
 
 /* Получение текущего .pptx и имя файла */
-export async function getPresentationBlob(): Promise<PresentationFileData> {
+export async function getPresentationBlob(title: string): Promise<PresentationFileData> {
     const blob = await readCompressedFile();
-    const baseName = "TestName";
-    return { blob, fileName: `${baseName}.pptx` };
+    return { blob, fileName: buildFileName(title) };
 }
 
 function readCompressedFile(): Promise<Blob> {
@@ -46,7 +45,7 @@ function readCompressedFile(): Promise<Blob> {
                     file.closeAsync();
                     reject(new ExportError(
                         "FILE_TOO_LARGE",
-                        `Файл слишком большой (${toMB(file.size)} МБ). Максимум — ${toMB(CONFIG.MAX_FILE_SIZE)} МБ.`,
+                        `Файл слишком большой (${toMB(file.size)}). Максимум — ${toMB(CONFIG.MAX_FILE_SIZE)}.`,
                     ));
                     return;
                 }
@@ -80,4 +79,42 @@ function readCompressedFile(): Promise<Blob> {
             },
         );
     });
+}
+
+const FORBIDDEN_CHARS = /[<>:"/\\|?*\u0000-\u001F]/g;
+
+export function sanitizeFileName(raw: string): string {
+    return raw
+        .replace(FORBIDDEN_CHARS, "_")
+        .replace(/\s+/g, " ")
+        .replace(/^[.\s]+|[.\s]+$/g, "")
+        .slice(0, 120);
+}
+
+export function getSavedBaseName(): string | null {
+    const url = Office.context.document.url;
+    if (!url) return null;
+
+    const last = url.split(/[?#]/)[0].split(/[/\\]/).pop();
+    if (!last) return null;
+
+    let decoded = last;
+    try {
+        decoded = decodeURIComponent(last);
+    } catch {
+    }
+
+    const base = sanitizeFileName(decoded.replace(/\.(pptx|pptm|ppsx|potx|pps|ppt)$/i, ""));
+    return base || null;
+}
+
+function timestampName(): string {
+    const d = new Date();
+    const p = (n: number) => String(n).padStart(2, "0");
+    return `Презентация_${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}_${p(d.getHours())}-${p(d.getMinutes())}`;
+}
+
+export function buildFileName(title: string): string {
+    const base = sanitizeFileName(title) || getSavedBaseName() || timestampName();
+    return `${base}.pptx`;
 }
