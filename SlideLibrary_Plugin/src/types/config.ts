@@ -1,13 +1,12 @@
-declare const API_BASE_URL: string;
 
-export const  CONFIG = {
-    API_BASE_URL,
+export const CONFIG = {
+    API_BASE_URL: "",
     MAX_FILE_SIZE: 100 * 1024 * 1024,
-    MIN_FILE_SIZE: 1024,
+    MIN_FILE_SIZE: 1,
     REQUEST_TIMEOUT_MS: 120_000,
-    TITLE_MIN: 2,
-    TITLE_MAX: 150,
-    DESCRIPTION_MAX: 1000,
-    TAGS_MAX: 10,
-    TAG_MAX_LENGTH: 30,
+    TITLE_MIN: 1,
+    TITLE_MAX: 255,
+    DESCRIPTION_MAX: 2000,
+    TAGS_MAX: 20,
+    TAG_MAX_LENGTH: 100,
 } as const;
