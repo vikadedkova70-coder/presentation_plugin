@@ -20,7 +20,7 @@ export interface ApiErrorDetail {
 }
 
 export interface ApiErrorResponse {
-    detail?: string | ApiErrorDetail;
+    detail?: string | ApiErrorDetail | unknown[];
 }
 
 export type FormErrors = Partial<Record<keyof ExportFormData, string>>;
