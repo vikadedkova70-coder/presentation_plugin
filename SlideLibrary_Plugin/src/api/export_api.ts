@@ -47,7 +47,7 @@ export function buildExportFormData(file: PresentationFileData, form: ExportForm
     formData.append("file", file.blob, file.fileName);
     formData.append("title", form.title);
     formData.append("description", form.description);
-    form.tags.forEach((tag) => formData.append("tags", tag));
+    formData.append("tags", form.tags.join(", "));
     return formData;
 }
 
